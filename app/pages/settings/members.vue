@@ -3,6 +3,10 @@ import type { Member } from '~/types'
 
 const { data: members } = await useFetch<Member[]>('/api/members', { default: () => [] })
 
+function onInvite(member: Member) {
+  members.value = [...members.value, member]
+}
+
 const q = ref('')
 
 const filteredMembers = computed(() => {
@@ -21,11 +25,7 @@ const filteredMembers = computed(() => {
       orientation="horizontal"
       class="mb-4"
     >
-      <UButton
-        label="Invite people"
-        color="neutral"
-        class="w-fit lg:ms-auto"
-      />
+      <SettingsMembersInviteModal @invite="onInvite" />
     </UPageCard>
 
     <UPageCard variant="subtle" :ui="{ container: 'p-0 sm:p-0 gap-y-0', wrapper: 'items-stretch', header: 'p-4 mb-0 border-b border-default' }">
